@@ -1,16 +1,14 @@
-// Import Firebase authentication
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-
-const auth = getAuth();
+ // Initialize Firebase Auth
+const auth = firebase.auth();
 
 // Function to handle user signup
 function signUp() {
     const email = document.getElementById("signup-email").value;
     const password = document.getElementById("signup-password").value;
 
-    createUserWithEmailAndPassword(auth, email, password)
+    auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            // Signed in 
+            // Signed up successfully
             const user = userCredential.user;
             alert("Sign Up Successful!");
             displayUserInfo(user);
@@ -27,9 +25,9 @@ function login() {
     const email = document.getElementById("login-email").value;
     const password = document.getElementById("login-password").value;
 
-    signInWithEmailAndPassword(auth, email, password)
+    auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            // Signed in 
+            // Signed in successfully
             const user = userCredential.user;
             alert("Login Successful!");
             displayUserInfo(user);
@@ -43,8 +41,8 @@ function login() {
 
 // Function to handle Google sign-in
 function googleSignIn() {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
         .then((result) => {
             const user = result.user;
             alert("Google Sign-In Successful!");
@@ -59,7 +57,7 @@ function googleSignIn() {
 
 // Function to handle user logout
 function logout() {
-    signOut(auth).then(() => {
+    auth.signOut().then(() => {
         alert("Logout Successful!");
         document.getElementById("user-details").textContent = "";
     }).catch((error) => {
@@ -74,4 +72,14 @@ function displayUserInfo(user) {
         UID: ${user.uid}
     `;
 }
-  
+
+// Listen to authentication state changes
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        // User is signed in, display user info
+        displayUserInfo(user);
+    } else {
+        // User is signed out, clear the user info
+        document.getElementById("user-details").textContent = "";
+    }
+});
