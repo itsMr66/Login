@@ -1,4 +1,18 @@
- // Initialize Firebase Auth
+ // Ensure Firebase is initialized
+if (!firebase.apps.length) {
+    firebase.initializeApp({
+        
+  apiKey: "AIzaSyBdmJbUR0Av_1MQvToaHZ-MITpPFPfHDHc",
+  authDomain: "share-fe152.firebaseapp.com",
+  projectId: "share-fe152",
+  storageBucket: "share-fe152.appspot.com",
+  messagingSenderId: "984374741236",
+  appId: "1:984374741236:web:aabaf990b2638775f2f6a1",
+  measurementId: "G-HJ7V4N5RRM"
+    });
+}
+
+// Initialize Firebase Auth after Firebase has been initialized
 const auth = firebase.auth();
 
 // Function to handle user signup
